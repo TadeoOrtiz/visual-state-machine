@@ -1,0 +1,92 @@
+[gd_scene load_steps=4 format=3 uid="uid://br5fnlye8nogo"]
+
+[ext_resource type="Theme" uid="uid://c2o3ac100j6kt" path="res://addons/visual_state_machine/editor_theme.tres" id="1_qivmb"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/editor.gd" id="1_wxv6l"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/state_machine_graph_edit.gd" id="3_nl1bl"]
+
+[node name="Editor" type="PanelContainer"]
+auto_translate_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_qivmb")
+script = ExtResource("1_wxv6l")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Toolbar" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="RefreshButton" type="Button" parent="VBoxContainer/Toolbar"]
+layout_mode = 2
+text = "Reresh"
+flat = true
+
+[node name="ShowConnections" type="Button" parent="VBoxContainer/Toolbar"]
+layout_mode = 2
+text = "Show Connections"
+flat = true
+
+[node name="WorkSpace" type="HSplitContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/WorkSpace"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/WorkSpace/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="StateVisualizer" type="ItemList" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+allow_search = false
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/WorkSpace/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="StateVisualizer" type="ItemList" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+allow_search = false
+
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer/WorkSpace"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+grid_pattern = 1
+script = ExtResource("3_nl1bl")
+
+[node name="Background" type="Panel" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="VBoxContainer/Toolbar/RefreshButton" to="." method="refresh"]
+[connection signal="pressed" from="VBoxContainer/Toolbar/ShowConnections" to="." method="show_connections_in_sm"]
+[connection signal="connection_request" from="VBoxContainer/WorkSpace/GraphEdit" to="VBoxContainer/WorkSpace/GraphEdit" method="_on_connection_request"]
+[connection signal="disconnection_request" from="VBoxContainer/WorkSpace/GraphEdit" to="VBoxContainer/WorkSpace/GraphEdit" method="_on_disconnection_request"]
+[connection signal="end_node_move" from="VBoxContainer/WorkSpace/GraphEdit" to="." method="_on_graph_edit_end_node_move"]

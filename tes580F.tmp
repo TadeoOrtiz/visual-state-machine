@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqnedooa00u8s"]
+
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/state/state_resource.gd" id="2_a7b4r"]
+[ext_resource type="Resource" uid="uid://dshm20qmp0pxy" path="res://idle.tres" id="3_qahnp"]
+[ext_resource type="Resource" uid="uid://bdpewhvtmdxl8" path="res://walk.tres" id="4_527i7"]
+
+[sub_resource type="GDScript" id="GDScript_pp5nd"]
+script/source = "@tool
+class_name StateMachine extends Node
+
+signal states_changed
+
+@export var auto_start: bool
+@export var states: Array[StateResource] = []:
+	set(value):
+		states = value
+		states_changed.emit()
+
+var _connections: Array[Array]
+var _nodes_position: Dictionary
+
+func _ready() -> void:
+	if auto_start: start()
+
+func start() -> void:
+	states[0].state._on_enter()
+
+func connect_states(from_state: StateResource, transition_index: int, to_state: StateResource, entry_index: int) -> void:
+	var transition := from_state.transitions[transition_index]
+	transition.connect_entry(to_state.entries[entry_index])
+	
+	_connections.append([from_state, transition_index, to_state, entry_index])
+
+func disconnect_states(from_state: StateResource, transition_index: int, to_state: StateResource, entry_index: int) -> void:
+	var transition := from_state.transitions[transition_index]
+	transition.disconnect_entry(to_state.entries[entry_index])
+	
+	_connections.erase([from_state, transition_index, to_state, entry_index])
+
+func _get_property_list() -> Array[Dictionary]:
+	var properties: Array[Dictionary]
+	
+	properties.append(
+		{
+			\"name\": \"_connections\",
+			\"type\": TYPE_ARRAY,
+			\"usage\": PROPERTY_USAGE_STORAGE
+		}
+	)
+	
+	properties.append(
+		{
+			\"name\": \"_nodes_position\",
+			\"type\": TYPE_DICTIONARY,
+			\"usage\": PROPERTY_USAGE_STORAGE
+		}
+	)
+	
+	return properties
+"
+
+[node name="TestScene" type="Node2D"]
+
+[node name="StateMachine" type="Node" parent="."]
+script = SubResource("GDScript_pp5nd")
+states = Array[ExtResource("2_a7b4r")]([ExtResource("3_qahnp"), ExtResource("4_527i7")])

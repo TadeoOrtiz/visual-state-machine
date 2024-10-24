@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="StateResource" load_steps=6 format=3 uid="uid://dshm20qmp0pxy"]
+
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/state/state_resource.gd" id="1_0gsyo"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/state/entry.gd" id="1_r48o1"]
+[ext_resource type="Script" path="res://idle.gd" id="2_1shnt"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/exports/exports.gd" id="2_g10jx"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/scripts/state/transition.gd" id="5_25ujf"]
+
+[resource]
+script = ExtResource("1_0gsyo")
+state_script = ExtResource("2_1shnt")
+exports = Array[ExtResource("2_g10jx")]([])
+entries = Array[ExtResource("1_r48o1")]([Object(RefCounted,"script":ExtResource("1_r48o1"),"type":0,"entry_method":Callable(),"color":Color(1, 1, 1, 1))
+])
+transitions = Array[ExtResource("5_25ujf")]([Object(RefCounted,"script":ExtResource("5_25ujf"),"type":1,"name":"Walk","color":Color(1, 1, 1, 1),"connections":Array[ExtResource("1_r48o1")]([Object(RefCounted,"script":ExtResource("1_r48o1"),"type":0,"entry_method":Callable(),"color":Color(1, 1, 1, 1))
+]),"connections":Array[ExtResource("1_r48o1")]([Object(RefCounted,"script":ExtResource("1_r48o1"),"type":0,"entry_method":Callable(),"color":Color(1, 1, 1, 1))
+]))
+])

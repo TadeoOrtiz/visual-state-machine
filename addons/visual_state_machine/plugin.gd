@@ -42,13 +42,13 @@ func _handles(object: Object) -> bool:
 
 func _edit(object: Object) -> void:
 	if is_instance_valid(editor):
-		editor.clear()
 		if object is StateMachine:
 			editor.visible = true
 			editor.show_data(object)
 		else:
 			_make_visible(false)
 			editor.current_state_machine = null
+			editor.clear_nodes()
 
 func _exit_tree() -> void:
 	remove_custom_type("StateMachine")

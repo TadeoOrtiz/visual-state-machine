@@ -1,9 +1,11 @@
 class_name State extends RefCounted
 
-var _state_machine: StateMachine
+var _name: String
 
-func _init_state() -> void:
-	pass
+var target: Node
+var inputs: Array[StateInput]
+var outputs: Array[StateOutput]
+
 
 func _on_enter() -> void:
 	pass
@@ -20,8 +22,10 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	pass
 
-func _get_transition_events() -> Array[StateTransition]:
-	return []
+func _to_string() -> String:
+	return get_name()
 
-func _get_entry_events() -> Array[StateEntry]:
-	return []
+func get_name() -> String:
+	if _name == "":
+		return get_script().resource_path.get_file().get_basename().capitalize()
+	return _name

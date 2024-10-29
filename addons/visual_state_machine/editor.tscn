@@ -35,40 +35,7 @@ layout_mode = 2
 text = "Show Connections"
 flat = true
 
-[node name="WorkSpace" type="HSplitContainer" parent="VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/WorkSpace"]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/WorkSpace/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Panel" type="Panel" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="StateVisualizer" type="ItemList" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-allow_search = false
-
-[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/WorkSpace/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Panel" type="Panel" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="StateVisualizer" type="ItemList" parent="VBoxContainer/WorkSpace/VBoxContainer/PanelContainer2"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-allow_search = false
-
-[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer/WorkSpace"]
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -77,16 +44,8 @@ mouse_filter = 1
 grid_pattern = 1
 script = ExtResource("3_nl1bl")
 
-[node name="Background" type="Panel" parent="VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[connection signal="pressed" from="VBoxContainer/Toolbar/RefreshButton" to="." method="refresh"]
+[connection signal="button_down" from="VBoxContainer/Toolbar/RefreshButton" to="." method="refresh"]
 [connection signal="pressed" from="VBoxContainer/Toolbar/ShowConnections" to="." method="show_connections_in_sm"]
-[connection signal="connection_request" from="VBoxContainer/WorkSpace/GraphEdit" to="VBoxContainer/WorkSpace/GraphEdit" method="_on_connection_request"]
-[connection signal="disconnection_request" from="VBoxContainer/WorkSpace/GraphEdit" to="VBoxContainer/WorkSpace/GraphEdit" method="_on_disconnection_request"]
-[connection signal="end_node_move" from="VBoxContainer/WorkSpace/GraphEdit" to="." method="_on_graph_edit_end_node_move"]
+[connection signal="connection_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_connection_request"]
+[connection signal="disconnection_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_disconnection_request"]
+[connection signal="end_node_move" from="VBoxContainer/GraphEdit" to="." method="_on_graph_edit_end_node_move"]

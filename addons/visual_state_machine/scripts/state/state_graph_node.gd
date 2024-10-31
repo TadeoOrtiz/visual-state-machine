@@ -3,7 +3,6 @@ class_name StateGraphNode extends GraphNode
 var state: State
 
 func _init() -> void:
-	resizable = true
 	custom_minimum_size.x = 150
 
 func _enter_tree() -> void:

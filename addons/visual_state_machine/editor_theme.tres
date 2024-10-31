@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://c2o3ac100j6kt"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://c2o3ac100j6kt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esdpq"]
 content_margin_left = 4.0
@@ -43,8 +43,23 @@ border_width_right = 1
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 
+[sub_resource type="SystemFont" id="SystemFont_73aft"]
+font_names = PackedStringArray("Arial Rounded MT")
+font_italic = true
+generate_mipmaps = true
+
 [resource]
 GraphNode/styles/panel = SubResource("StyleBoxFlat_esdpq")
 GraphNode/styles/panel_selected = SubResource("StyleBoxFlat_kwqo7")
 GraphNode/styles/titlebar = SubResource("StyleBoxFlat_qll1p")
 GraphNode/styles/titlebar_selected = SubResource("StyleBoxFlat_nybsk")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.498039)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 0
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/fonts/font = SubResource("SystemFont_73aft")
+Label/styles/normal = null

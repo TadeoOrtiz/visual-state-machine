@@ -13,8 +13,6 @@ var connection: StateInput = null
 
 func emit() -> void:
 	if connection:
-		print("---")
-		print(output_called)
 		output_called.emit()
 		connection.method.call()
 	else:

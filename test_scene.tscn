@@ -1,24 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqnedooa00u8s"]
+[gd_scene load_steps=5 format=3 uid="uid://dqnedooa00u8s"]
 
 [ext_resource type="Script" path="res://addons/visual_state_machine/scripts/statemachine/state_machine.gd" id="1_1cii4"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/test/idle.gd" id="2_2iymu"]
+[ext_resource type="Script" path="res://addons/visual_state_machine/test/menu.gd" id="3_d0rik"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6l4wx"]
-load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [node name="TestScene" type="Node2D"]
-
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource("1_1cii4")
-_connections = Array[Array]([["Idle", 0, "Walk", 1], ["Start", 0, "Idle", 0], ["Walk", 0, "End", 0]])
-_nodes_position = {
-"End": Vector2(788, 174),
-"Idle": Vector2(313, 67),
-"Start": Vector2(113, 127),
-"State": Vector2(79, 90),
-"Walk": Vector2(553, 127)
-}
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
 [node name="Icon" type="Sprite2D" parent="CharacterBody2D"]
 texture = SubResource("CompressedTexture2D_6l4wx")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("1_1cii4")
+scripts_states = Array[Script]([ExtResource("2_2iymu"), ExtResource("3_d0rik")])
+_connections = Array[Array]([])
+_nodes_position = {
+"End": Vector2(602.929, 188),
+"Idle": Vector2(202.929, 148),
+"Menu": Vector2(422.929, 88),
+"Start": Vector2(-17.071, 188)
+}

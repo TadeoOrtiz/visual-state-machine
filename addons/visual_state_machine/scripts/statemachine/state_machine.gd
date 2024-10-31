@@ -100,10 +100,20 @@ func create_states_objects() -> void:
 		var state = script.new() as State
 		if state:
 			state.target = target
+			
+			
 			var input := StateInput.new(0)
 			input.method = state._on_enter
 			state.inputs.push_front(input)
 			states_list.append(state)
+
+func clear_connections() -> void:
+	for connection in _connections:
+		var state: State = find_state(connection[0])
+		state.outputs[connection[1]].output_called.disconnect(transition_to)
+		state.outputs[connection[1]].connection = null
+	
+	_connections.clear()
 
 func connect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
 	var output: StateOutput = from_state.outputs[output_index]

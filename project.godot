@@ -14,8 +14,7 @@ config/name="State Machine Node Graph"
 config/tags=PackedStringArray("plugin")
 run/main_scene="res://test_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/editor_icon_previewer/plugin.cfg", "res://addons/visual_state_machine/plugin.cfg")
+enabled=PackedStringArray("res://addons/visual_state_machine/plugin.cfg")

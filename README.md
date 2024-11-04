@@ -1,4 +1,7 @@
-# Visual State Machine
+<div align="center">
+	<img src="icon.svg" width="160" height="160">
+
+<h3 align="center">Node Finite State Machine</h3>
 
 Similar Addons
 - https://github.com/ninetailsrabbit/node-finite-state-machine

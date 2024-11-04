@@ -12,8 +12,9 @@ config_version=5
 
 config/name="State Machine Node Graph"
 config/tags=PackedStringArray("plugin")
-run/main_scene="res://test_scene.tscn"
+run/main_scene="res://addons/visual_state_machine/demo/test_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://icon.svg"
 
 [editor_plugins]
 

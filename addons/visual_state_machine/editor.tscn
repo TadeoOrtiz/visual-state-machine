@@ -25,14 +25,19 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 0
 
-[node name="RefreshButton" type="Button" parent="VBoxContainer/Toolbar"]
+[node name="Refresh" type="Button" parent="VBoxContainer/Toolbar"]
 layout_mode = 2
 text = "Reresh"
 flat = true
 
-[node name="ShowConnections" type="Button" parent="VBoxContainer/Toolbar"]
+[node name="ClearConnections" type="Button" parent="VBoxContainer/Toolbar"]
 layout_mode = 2
 text = "Clear Connections"
+flat = true
+
+[node name="ShowConnections" type="Button" parent="VBoxContainer/Toolbar"]
+layout_mode = 2
+text = "Show SM Connections"
 flat = true
 
 [node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
@@ -46,8 +51,9 @@ grid_pattern = 1
 show_zoom_label = true
 script = ExtResource("3_nl1bl")
 
-[connection signal="button_down" from="VBoxContainer/Toolbar/RefreshButton" to="." method="refresh"]
-[connection signal="pressed" from="VBoxContainer/Toolbar/ShowConnections" to="." method="clear_connections"]
+[connection signal="button_down" from="VBoxContainer/Toolbar/Refresh" to="." method="refresh"]
+[connection signal="pressed" from="VBoxContainer/Toolbar/ClearConnections" to="." method="clear_connections"]
+[connection signal="pressed" from="VBoxContainer/Toolbar/ShowConnections" to="." method="show_connections"]
 [connection signal="connection_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_connection_request"]
 [connection signal="disconnection_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_disconnection_request"]
 [connection signal="end_node_move" from="VBoxContainer/GraphEdit" to="." method="_on_graph_edit_end_node_move"]

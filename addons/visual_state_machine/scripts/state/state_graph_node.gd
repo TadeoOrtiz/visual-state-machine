@@ -8,15 +8,11 @@ func _init() -> void:
 func _enter_tree() -> void:
 	create()
 
-func refresh_graph() -> void:
-	clear()
-	create()
-
 func create() -> void:
 	create_entries()
 	var properties_separator = HSeparator.new()
 	add_child(properties_separator)
-	create_transitions()
+	create_outputs()
 
 func clear() -> void:
 	for child in get_children():
@@ -35,13 +31,13 @@ func create_entries():
 		set_slot_type_left(index, input.type)
 		set_slot_color_left(index, input.color)
 
-func create_transitions():
-	for transition: StateOutput in state.outputs:
-		var transition_label: Label = Label.new()
-		transition_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		transition_label.text = transition.name
-		add_child(transition_label)
-		var index: int = transition_label.get_index()
+func create_outputs():
+	for output: StateOutput in state.outputs:
+		var output_label: Label = Label.new()
+		output_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		output_label.text = output.display_name
+		add_child(output_label)
+		var index: int = output_label.get_index()
 		set_slot_enabled_right(index, true)
-		set_slot_type_right(index, transition.type)
-		set_slot_color_right(index, transition.color)
+		set_slot_type_right(index, output.type)
+		set_slot_color_right(index, output.color)

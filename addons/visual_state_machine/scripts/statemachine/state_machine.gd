@@ -2,6 +2,8 @@
 @tool
 class_name StateMachine extends Node
 
+const NOTIFICATION_STATE_EXIT: int = 11
+
 signal states_changed
 signal started
 signal finished
@@ -12,7 +14,7 @@ signal finished
 	set(value):
 		scripts_states = value
 
-var _connections: Array[Array]
+var _connections: Array[Dictionary]
 var _nodes_position: Dictionary
 
 var states_list: Array[State]
@@ -45,14 +47,14 @@ func _input(event: InputEvent) -> void:
 
 func _create_start_end_states() -> void:
 	var start_state: State = State.new()
-	start_state._name = "Start"
+	start_state.set_name("Start")
 	var start_output := StateOutput.new()
-	start_output.name = "Start"
+	start_output.display_name = "Start"
 	start_state.outputs.append(start_output)
 	
 	
 	var end_state: State = State.new()
-	end_state._name = "End"
+	end_state.set_name("End")
 	var end_input := StateInput.new(0)
 	end_input.method = _end
 	end_state.inputs.append(end_input)
@@ -62,10 +64,10 @@ func _create_start_end_states() -> void:
 
 func _create_connections() -> void:
 	for i in _connections:
-		var from_state = i[0]
-		var output_index = i[1]
-		var to_state = i[2]
-		var input_index = i[3]
+		var from_state = i["from_state"]
+		var output_index = i["from_output"]
+		var to_state = i["to_state"]
+		var input_index = i["to_input"]
 		
 		var origin_state: State = find_state(from_state)
 		var target_state: State = find_state(to_state)
@@ -78,6 +80,7 @@ func _create_connections() -> void:
 			output.output_called.connect(transition_to.bind(output.connection.method.get_object()))
 
 func _end() -> void:
+	current_state.notification(NOTIFICATION_STATE_EXIT)
 	current_state = null
 	finished.emit()
 
@@ -87,7 +90,7 @@ func start() -> void:
 
 func transition_to(state: State) -> void:
 	if state:
-		current_state._on_exit()
+		current_state.notification(NOTIFICATION_STATE_EXIT)
 		current_state = state
 		states_changed.emit()
 
@@ -101,11 +104,12 @@ func create_states_objects() -> void:
 		if state:
 			state.target = target
 			
-			
 			var input := StateInput.new(0)
 			input.method = state._on_enter
 			state.inputs.push_front(input)
 			states_list.append(state)
+			
+			state.set_name(script.resource_path.get_file().get_basename().capitalize())
 
 func clear_connections() -> void:
 	for connection in _connections:
@@ -121,14 +125,31 @@ func connect_states(from_state: State, output_index: int, to_state: State, input
 	output.connection = to_state.inputs[input_index]
 	output.output_called.connect(transition_to.bind(output.connection.method.get_object()))
 	
-	_connections.append([from_state.get_name(), output_index, to_state.get_name(), input_index])
+	
+	var connection: Dictionary
+	
+	connection["from_state"] = from_state.get_name()
+	connection["from_output"] = output_index
+	connection["to_state"] = to_state.get_name()
+	connection["to_input"] = input_index
+	
+	_connections.append(connection)
 
 func disconnect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
 	var output := from_state.outputs[output_index]
 	output.output_called.disconnect(transition_to)
 	output.connection = null
 	
-	_connections.erase([from_state.get_name(), output_index, to_state.get_name(), input_index])
+	var delete_connection: Dictionary
+	
+	delete_connection["from_state"] = from_state.get_name()
+	delete_connection["from_output"] = output_index
+	delete_connection["to_state"] = to_state.get_name()
+	delete_connection["to_input"] = input_index
+	
+	for connection in _connections:
+		if connection == delete_connection:
+			_connections.erase(connection)
 
 func find_state(state_name: String) -> State:
 	for state in states_list:

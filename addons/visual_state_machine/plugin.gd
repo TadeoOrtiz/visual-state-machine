@@ -38,9 +38,12 @@ func _get_plugin_icon() -> Texture2D:
 	return null
 
 func _handles(object: Object) -> bool:
+	print(object)
 	return object is StateMachine
 
 func _edit(object: Object) -> void:
+	print("o")
+	print(object)
 	if is_instance_valid(editor):
 		if object is StateMachine:
 			editor.visible = true

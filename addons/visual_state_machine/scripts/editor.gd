@@ -17,14 +17,17 @@ func show_data(state_machine: StateMachine) -> void:
 	await get_tree().create_timer(0.01).timeout
 	create_nodes()
 	for connection in current_state_machine._connections:
-		graph_edit.connect_node(connection[0], connection[1], connection[2], connection[3])
-	
+		graph_edit.connect_node(connection["from_state"], connection["from_output"], connection["to_state"], connection["to_input"])
 
 func create_nodes() -> void:
 	for state: State in current_state_machine.states_list:
 		var pos := Vector2.ZERO
-		if state._name == "End":
-			pos = Vector2(400, 0)
+		match state.get_name():
+			"End":
+				pos = Vector2(800, 0)
+			"Start":
+				pos = Vector2(-400, 0)
+		
 		if current_state_machine._nodes_position.has(state.get_name()):
 			pos = current_state_machine._nodes_position[state.get_name()]
 		graph_edit.add_node(pos, state)
@@ -41,7 +44,11 @@ func refresh() -> void:
 	create_nodes()
 	
 	for connection in current_state_machine._connections:
-		graph_edit.connect_node(connection[0], connection[1], connection[2], connection[3])
+		graph_edit.connect_node(connection["from_state"], connection["from_output"], connection["to_state"], connection["to_input"])
+
+func show_connections() -> void:
+	print(current_state_machine._connections)
+	print(graph_edit.get_connection_list())
 
 func clear_nodes() -> void:
 	graph_edit.remove_node()

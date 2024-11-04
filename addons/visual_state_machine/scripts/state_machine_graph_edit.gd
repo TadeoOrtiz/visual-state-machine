@@ -33,8 +33,8 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	var target_node: StateGraphNode = get_node(NodePath(to_node)) as StateGraphNode
 	
 	for connection in state_machine._connections:
-		if connection[0] == from_node:
-			if connection[1] == from_port:
+		if connection["from_state"] == from_node:
+			if connection["from_output"] == from_port:
 				if connection[2] == to_node and connection[3] != to_port:
 					state_machine.disconnect_states(origin_node.state, from_port, target_node.state, connection[3])
 					disconnect_node(from_node, from_port, to_node, connection[3])
@@ -42,14 +42,13 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 					state_machine.connect_states(origin_node.state, from_port, target_node.state, to_port)
 					connect_node(from_node, from_port, to_node, to_port)
 					return
-				elif connection[2] != to_node:
+				elif connection["to_state"] != to_node:
 					state_machine.disconnect_states(origin_node.state, from_port, state_machine.find_state(connection[2]), connection[3])
 					disconnect_node(from_node, from_port, connection[2], connection[3])
 					
 					state_machine.connect_states(origin_node.state, from_port, target_node.state, to_port)
 					connect_node(from_node, from_port, to_node, to_port)
 					return
-	
 	
 	state_machine.connect_states(origin_node.state, from_port, target_node.state, to_port)
 	connect_node(from_node, from_port, to_node, to_port)

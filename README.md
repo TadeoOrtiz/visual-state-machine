@@ -2,6 +2,7 @@
 	<img src="icon.svg" alt="Logo" width="160" height="160">
 <h3 align="center">Node Finite State Machine</h3>
 
+</div>
 Similar Addons
 - https://github.com/ninetailsrabbit/node-finite-state-machine
 - https://github.com/imjp94/gd-YAFSM

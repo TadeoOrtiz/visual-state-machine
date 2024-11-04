@@ -1,6 +1,5 @@
 <div align="center">
-	<img src="icon.svg" width="160" height="160">
-
+	<img src="icon.svg" alt="Logo" width="160" height="160">
 <h3 align="center">Node Finite State Machine</h3>
 
 Similar Addons

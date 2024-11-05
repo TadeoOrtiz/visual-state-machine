@@ -50,7 +50,7 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 					connect_node(from_node, from_port, to_node, to_port)
 					return
 	
-	state_machine.connect_states(origin_node.state, from_port, target_node.state, to_port)
+	state_machine._connect_states(origin_node.state, from_port, target_node.state, to_port)
 	connect_node(from_node, from_port, to_node, to_port)
 
 
@@ -58,5 +58,5 @@ func _on_disconnection_request(from_node: StringName, from_port: int, to_node: S
 	var origin_node: StateGraphNode = get_node(NodePath(from_node)) as StateGraphNode
 	var target_node: StateGraphNode = get_node(NodePath(to_node)) as StateGraphNode
 	
-	state_machine.disconnect_states(origin_node.state, from_port, target_node.state, to_port)
+	state_machine._disconnect_states(origin_node.state, from_port, target_node.state, to_port)
 	disconnect_node(from_node, from_port, to_node, to_port)

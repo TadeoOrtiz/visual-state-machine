@@ -35,15 +35,12 @@ func _get_plugin_name() -> String:
 	return 'Visual StateMachine'
 
 func _get_plugin_icon() -> Texture2D:
-	return null
+	return load("res://addons/visual_state_machine/icons/state_machine.svg")
 
 func _handles(object: Object) -> bool:
-	print(object)
 	return object is StateMachine
 
 func _edit(object: Object) -> void:
-	print("o")
-	print(object)
 	if is_instance_valid(editor):
 		if object is StateMachine:
 			editor.visible = true

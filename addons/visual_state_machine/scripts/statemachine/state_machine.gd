@@ -2,31 +2,49 @@
 @tool
 class_name StateMachine extends Node
 
-const NOTIFICATION_STATE_EXIT: int = 11
+## Emit when state transition to another
+signal state_changed
 
-signal states_changed
+## Emited when [mehtod start] called
 signal started
+
+## Emited when [mehtod pause] called
+signal paused
+
+## Emited when [mehtod resume] called
+signal resumed
+
+## Emited when any state in self transitions to the end node
 signal finished
 
-@export var target: Node
+## Target node of the State Machine 
+@export var target: Node = get_parent()
+
+## Determin is the State Machine start when [method _ready] called
 @export var auto_start: bool
-@export var scripts_states: Array[Script] = []:
-	set(value):
-		scripts_states = value
+
+## List of the State cripts
+@export var scripts_states: Array[Script]
 
 var _connections: Array[Dictionary]
 var _nodes_position: Dictionary
 
+## List of State objects
 var states_list: Array[State]
+
+## Is the current state in the State Machine
 var current_state: State
 
 func _enter_tree() -> void:
-	create_states_objects()
+	target = get_parent() if get_parent() is not SubViewport else null
+	_create_states_objects()
 	if _connections.size() > 0:
 		_create_connections()
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
+	for state in states_list:
+		state.notification(State.NOTIFICATION_STATEMACHINE_READY)
 	current_state = states_list[0]
 	if auto_start: start()
 
@@ -73,28 +91,24 @@ func _create_connections() -> void:
 		var target_state: State = find_state(to_state)
 		var output: StateOutput = origin_state.outputs[output_index]
 		
-		if output.output_called.is_connected(transition_to):
-			output.output_called.disconnect(transition_to)
+		if output.output_called.is_connected(_transition_to):
+			output.output_called.disconnect(_transition_to)
 		output.connection = target_state.inputs[input_index]
 		if target_state.get_name() != "End":
-			output.output_called.connect(transition_to.bind(output.connection.method.get_object()))
+			output.output_called.connect(_transition_to.bind(output.connection.method.get_object()))
 
 func _end() -> void:
-	current_state.notification(NOTIFICATION_STATE_EXIT)
+	current_state.notification(State.NOTIFICATION_STATE_EXIT)
 	current_state = null
 	finished.emit()
 
-func start() -> void:
-	started.emit()
-	current_state.outputs[0].emit()
-
-func transition_to(state: State) -> void:
+func _transition_to(state: State) -> void:
 	if state:
-		current_state.notification(NOTIFICATION_STATE_EXIT)
+		current_state.notification(State.NOTIFICATION_STATE_EXIT)
 		current_state = state
-		states_changed.emit()
+		state_changed.emit()
 
-func create_states_objects() -> void:
+func _create_states_objects() -> void:
 	states_list.clear()
 	
 	_create_start_end_states()
@@ -111,19 +125,19 @@ func create_states_objects() -> void:
 			
 			state.set_name(script.resource_path.get_file().get_basename().capitalize())
 
-func clear_connections() -> void:
+func _clear_connections() -> void:
 	for connection in _connections:
-		var state: State = find_state(connection[0])
-		state.outputs[connection[1]].output_called.disconnect(transition_to)
-		state.outputs[connection[1]].connection = null
+		var state: State = find_state(connection["from_state"])
+		state.outputs[connection["from_output"]].output_called.disconnect(_transition_to)
+		state.outputs[connection["from_output"]].connection = null
 	
 	_connections.clear()
 
-func connect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
+func _connect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
 	var output: StateOutput = from_state.outputs[output_index]
 
 	output.connection = to_state.inputs[input_index]
-	output.output_called.connect(transition_to.bind(output.connection.method.get_object()))
+	output.output_called.connect(_transition_to.bind(output.connection.method.get_object()))
 	
 	
 	var connection: Dictionary
@@ -135,9 +149,9 @@ func connect_states(from_state: State, output_index: int, to_state: State, input
 	
 	_connections.append(connection)
 
-func disconnect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
+func _disconnect_states(from_state: State, output_index: int, to_state: State, input_index: int) -> void:
 	var output := from_state.outputs[output_index]
-	output.output_called.disconnect(transition_to)
+	output.output_called.disconnect(_transition_to)
 	output.connection = null
 	
 	var delete_connection: Dictionary
@@ -151,6 +165,22 @@ func disconnect_states(from_state: State, output_index: int, to_state: State, in
 		if connection == delete_connection:
 			_connections.erase(connection)
 
+## Start the State Machine, is called auto if [member auto_start] is enabled
+func start() -> void:
+	started.emit()
+	current_state.outputs[0].emit()
+
+## Pause the State Machine
+func pause() -> void:
+	paused.emit()
+	process_mode = PROCESS_MODE_DISABLED
+
+## Resume the State Machine
+func resume() -> void:
+	resumed.emit()
+	process_mode = PROCESS_MODE_INHERIT
+
+## Return the [State] object
 func find_state(state_name: String) -> State:
 	for state in states_list:
 		if state.get_name() == state_name:

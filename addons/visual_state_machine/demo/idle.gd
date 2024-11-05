@@ -8,7 +8,7 @@ func _init() -> void:
 	outputs.append(death)
 
 func _on_enter() -> void:
-	pass
+	print("HOLA IDLE")
 
 func _input(event):
-	jump.emit()
+	print(event)

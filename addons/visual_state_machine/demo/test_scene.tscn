@@ -8,8 +8,12 @@
 [ext_resource type="Script" path="res://addons/visual_state_machine/demo/on_air.gd" id="6_3gqb6"]
 [ext_resource type="Script" path="res://addons/visual_state_machine/demo/walk.gd" id="7_yn8y5"]
 
-[node name="StateMachine" type="Node"]
+[node name="Node" type="Node"]
+
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("1_y45qq")
+target = NodePath("..")
+auto_start = true
 scripts_states = Array[Script]([ExtResource("2_e57wl"), ExtResource("3_o218c"), ExtResource("4_41a1g"), ExtResource("5_l11g7"), ExtResource("6_3gqb6"), ExtResource("7_yn8y5")])
 _connections = Array[Dictionary]([{
 "from_output": 0,
@@ -18,47 +22,17 @@ _connections = Array[Dictionary]([{
 "to_state": "Idle"
 }, {
 "from_output": 0,
-"from_state": "Idle",
-"to_input": 1,
-"to_state": "On Air"
-}, {
-"from_output": 2,
-"from_state": "Idle",
-"to_input": 0,
-"to_state": "Walk"
-}, {
-"from_output": 3,
-"from_state": "Idle",
-"to_input": 0,
-"to_state": "Jump"
-}, {
-"from_output": 0,
-"from_state": "Jump",
-"to_input": 2,
-"to_state": "On Air"
-}, {
-"from_output": 4,
-"from_state": "Idle",
-"to_input": 0,
-"to_state": "Death"
-}, {
-"from_output": 0,
 "from_state": "Death",
 "to_input": 0,
 "to_state": "End"
-}, {
-"from_output": 1,
-"from_state": "Idle",
-"to_input": 0,
-"to_state": "Dash"
 }])
 _nodes_position = {
-"Dash": Vector2(330.09, 55.023),
-"Death": Vector2(330.09, 190.26),
-"End": Vector2(525.432, 205.286),
-"Idle": Vector2(149.774, 24.9704),
-"Jump": Vector2(330.09, 340.523),
-"On Air": Vector2(525.432, 325.496),
-"Start": Vector2(-45.5677, 24.9704),
-"Walk": Vector2(330.09, 460.733)
+"Dash": Vector2(336.864, 38.4773),
+"Death": Vector2(536.864, 220.295),
+"End": Vector2(718.682, 220.295),
+"Idle": Vector2(173.227, 165.75),
+"Jump": Vector2(355.045, 238.477),
+"On Air": Vector2(507.773, 49.3864),
+"Start": Vector2(-8.5909, 93.0227),
+"Walk": Vector2(336.864, 129.386)
 }

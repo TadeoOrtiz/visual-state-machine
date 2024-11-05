@@ -33,11 +33,11 @@ func create_nodes() -> void:
 		graph_edit.add_node(pos, state)
 
 func clear_connections() -> void:
-	current_state_machine.clear_connections()
+	current_state_machine._clear_connections()
 	graph_edit.clear_connections()
 
 func refresh() -> void:
-	current_state_machine.create_states_objects()
+	current_state_machine._create_states_objects()
 	
 	clear_nodes()
 	await get_tree().create_timer(0.01).timeout
@@ -45,10 +45,14 @@ func refresh() -> void:
 	
 	for connection in current_state_machine._connections:
 		graph_edit.connect_node(connection["from_state"], connection["from_output"], connection["to_state"], connection["to_input"])
+	
+	current_state_machine._create_connections()
 
 func show_connections() -> void:
-	print(current_state_machine._connections)
-	print(graph_edit.get_connection_list())
+	for connection in current_state_machine._connections:
+		print("State Machine Connection: ", connection)
+	for connection in graph_edit.get_connection_list():
+		print("Editor Connection: ", connection)
 
 func clear_nodes() -> void:
 	graph_edit.remove_node()

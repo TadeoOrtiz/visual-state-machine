@@ -4,12 +4,7 @@
 
 </div>
 
-Similar Addons
-- https://github.com/ninetailsrabbit/node-finite-state-machine
-- https://github.com/imjp94/gd-YAFSM
-- https://github.com/lowlevel-1989/object_state_machine
-
-La maquina de estados es un nodo (componente) que tiene una lista de scripts de estados expuesta
+A State Nachine whit visual nodes and connections for your game
 
 ![Pasted image 20241102164614](https://github.com/user-attachments/assets/05a3675a-c6db-46c5-b0fc-26518861b7c2)
 ## State Class Virtual Functions
